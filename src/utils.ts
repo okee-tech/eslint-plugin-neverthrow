@@ -11,8 +11,8 @@ const createRule = ESLintUtils.RuleCreator<ExamplePluginDocs>(
     `https://github.com/okee-tech/eslint-plugin-neverthrow/tree/main/docs/rules/${name}.md`
 );
 
-enum MessageIds {
+enum MessageId {
   MUST_USE = "mustUseResult",
 }
 
-export { createRule, MessageIds, ExamplePluginDocs };
+export { createRule, MessageId, ExamplePluginDocs };

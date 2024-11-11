@@ -1,6 +1,6 @@
-import { createRule, MessageIds } from "../utils";
+import { createRule, MessageId } from "../utils";
 
-const rule = createRule<[], MessageIds>({
+const rule = createRule<[], MessageId>({
   meta: {
     type: "problem",
     docs: {
@@ -10,12 +10,22 @@ const rule = createRule<[], MessageIds>({
     },
     schema: [],
     messages: {
-      [MessageIds.MUST_USE]: "test",
+      [MessageId.MUST_USE]: "test",
     },
   },
   name: "must-use-result",
   create(context) {
-    return {};
+    // context.report({})
+    console.log(context);
+
+    return {
+      TSAnyKeyword(node) {
+        return true;
+      },
+      ExpressionStatement(node) {
+        return true;
+      },
+    };
   },
   defaultOptions: [],
 });
