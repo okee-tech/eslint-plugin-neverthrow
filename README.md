@@ -82,9 +82,9 @@ const result = genResult();
 💡 Manually fixable by [editor suggestions](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions).\
 💭 Requires [type information](https://typescript-eslint.io/linting/typed-linting).
 
-| Name                                                     | Description                                                                   | 🔧  | 💡  | 💭  |
-| :------------------------------------------------------- | :---------------------------------------------------------------------------- | :-- | :-- | :-- |
-| [must-consume-result](docs/rules/must-consume-result.md) | Enforce proper handling of Result objects returned from neverthrow operations | 🔧  | 💡  | 💭  |
+| Name                                                     | Description                                                                   | 🔧 | 💡 | 💭 |
+| :------------------------------------------------------- | :---------------------------------------------------------------------------- | :- | :- | :- |
+| [must-consume-result](docs/rules/must-consume-result.md) | Enforce proper handling of Result objects returned from neverthrow operations | 🔧 | 💡 | 💭 |
 
 <!-- end auto-generated rules list -->
 
