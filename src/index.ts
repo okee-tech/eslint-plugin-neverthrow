@@ -12,7 +12,7 @@ const plugin: TSESLint.FlatConfig.Plugin = {
     "must-consume-result": mustUseResult,
   },
   processors: {},
-  configs: {},
+  configs: { recomended: {} },
 };
 
 plugin.configs!.recommended = {

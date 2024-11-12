@@ -35,7 +35,7 @@ function isNeverthrowResult(
 
   const symbol = type.aliasSymbol || type.symbol;
   if (!symbol) return false;
-  if (symbol.name != "Result" && symbol.name != "ResultAsync") return false;
+  if (symbol.name != "Result") return false;
 
   const declarations = symbol.declarations;
   if (!declarations) return false;
@@ -56,7 +56,7 @@ function isNeverthrowResult(
   return true;
 }
 
-function checkIfImediateResultConsumed(node: TSESTree.Node): boolean {
+function checkIfImediateResultFunction(node: TSESTree.Node): boolean {
   const consumeCallee = node.parent;
   if (!consumeCallee) return false;
   if (consumeCallee.type != AST_NODE_TYPES.MemberExpression) return false;
@@ -64,6 +64,22 @@ function checkIfImediateResultConsumed(node: TSESTree.Node): boolean {
   if (!RESULT_HANDLING_METHODS.has(consumeCallee.property.name)) return false;
 
   return true;
+}
+
+function checkIfImediateReturn(node: TSESTree.Node): boolean {
+  const returnStatement = node.parent;
+  if (!returnStatement) return false;
+
+  if (returnStatement.type == AST_NODE_TYPES.ReturnStatement) return true;
+  if (returnStatement.type == AST_NODE_TYPES.ArrowFunctionExpression)
+    return true;
+  if (returnStatement.type == AST_NODE_TYPES.YieldExpression) return true;
+
+  return false;
+}
+
+function checkIfImediateResultConsumed(node: TSESTree.Node): boolean {
+  return checkIfImediateResultFunction(node) || checkIfImediateReturn(node);
 }
 
 function checkIfVariableResultConsumed(
@@ -80,7 +96,6 @@ function checkIfVariableResultConsumed(
 
   const variableId = variable.id;
   if (variableId.type != AST_NODE_TYPES.Identifier) return false;
-  // if (checkIfImediateResultConsumed(variableId)) return true;
 
   const originalScope = context.sourceCode.getScope(variable);
   const scopeIterator = (innerScope: typeof originalScope) => {
@@ -103,9 +118,8 @@ function checkIfVariableResultConsumed(
 }
 
 function wasResultConsumed(
-  node: TSESTree.CallExpression,
+  node: TSESTree.Node,
   context: TSESLint.RuleContext<MessageId, []>,
-  parserServices: ParserServicesWithTypeInformation,
   _visited: Set<TSESTree.Node> = new Set()
 ): boolean {
   if (checkIfImediateResultConsumed(node)) return true;
@@ -114,20 +128,54 @@ function wasResultConsumed(
   return false;
 }
 
+function checkNode(
+  node: TSESTree.Node,
+  context: TSESLint.RuleContext<MessageId, []>,
+  parserServices: ParserServicesWithTypeInformation
+) {
+  if (!isNeverthrowResult(node, parserServices)) return;
+  if (wasResultConsumed(node, context)) return;
+
+  context.report({
+    node,
+    messageId: MessageId.MustConsume,
+    suggest: [
+      {
+        messageId: MessageId.AddIsOk,
+        fix: (fixer) => {
+          return fixer.insertTextAfter(node, ".isOk()");
+        },
+      },
+      {
+        messageId: MessageId.AddUnsafeUnwrap,
+        fix: (fixer) => {
+          return fixer.insertTextAfter(node, "._unsafeUnwrap()");
+        },
+      },
+    ],
+  });
+}
+
 const rule = createRule<[], MessageId>({
   name: "must-consume-result",
   meta: {
     type: "problem",
     docs: {
+      description:
+        "Enforce proper handling of Result objects returned from neverthrow operations",
       recommended: true,
       requiresTypeChecking: true,
-      description:
-        "Not consuming `neverthrow`'s `Result` is a possible error because errors could remain unhandled.",
     },
     schema: [],
     messages: {
-      [MessageId.MUST_USE]: "test",
+      [MessageId.MustConsume]:
+        "`Result` is created but never consumed. Try to use `isOk` or `_unsafeUnwrap`.",
+      [MessageId.AddIsOk]: "Add `isOk` to consume the `Result`.",
+      [MessageId.AddUnsafeUnwrap]:
+        "Add `_unsafeUnwrap` to consume the `Result`.",
     },
+    hasSuggestions: true,
+    fixable: "code",
   },
   create(context) {
     const parserServices = fromThrowable(() =>
@@ -142,24 +190,11 @@ const rule = createRule<[], MessageId>({
       ._unsafeUnwrap();
 
     return {
-      // AwaitExpression(node: TSESTree.AwaitExpression) {
-      //   if (!isNeverthrowResult(node.argument, parserServices)) return;
-      //   console.log("AWAIT EXPRESSION");
-      //   // if (!wasResultConsumed(node, parserServices)) return;
-
-      //   // context.report({
-      //   //   node,
-      //   //   messageId: MessageId.MUST_USE,
-      //   // });
-      // },
+      AwaitExpression(node: TSESTree.AwaitExpression) {
+        checkNode(node, context, parserServices);
+      },
       CallExpression(node: TSESTree.CallExpression) {
-        if (!isNeverthrowResult(node, parserServices)) return;
-        if (wasResultConsumed(node, context, parserServices)) return;
-
-        context.report({
-          node,
-          messageId: MessageId.MUST_USE,
-        });
+        checkNode(node, context, parserServices);
       },
     };
   },
