@@ -1,6 +1,6 @@
 import type { TSESLint } from "@typescript-eslint/utils";
+import mustUseResult from "./rules/must-consume-result";
 import pkg from "../package.json";
-import mustUseResult from "./rules/must-use-result";
 
 const plugin: TSESLint.FlatConfig.Plugin = {
   meta: {
@@ -9,7 +9,7 @@ const plugin: TSESLint.FlatConfig.Plugin = {
   },
   configs: {},
   rules: {
-    "must-use-result": mustUseResult,
+    "must-consume-result": mustUseResult,
   },
   processors: {},
 };

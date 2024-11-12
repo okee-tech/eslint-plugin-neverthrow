@@ -1,7 +1,9 @@
 <!-- begin auto-generated rules list -->
 
-| Name                                             | Description                                                                                |
-| :----------------------------------------------- | :----------------------------------------------------------------------------------------- |
-| [must-use-result](docs/rules/must-use-result.md) | Not handling neverthrow result is a possible error because errors could remain unhandleds. |
+💭 Requires [type information](https://typescript-eslint.io/linting/typed-linting).
+
+| Name                                                     | Description                                                                                      | 💭 |
+| :------------------------------------------------------- | :----------------------------------------------------------------------------------------------- | :- |
+| [must-consume-result](docs/rules/must-consume-result.md) | Not consuming `neverthrow`'s `Result` is a possible error because errors could remain unhandled. | 💭 |
 
 <!-- end auto-generated rules list -->
