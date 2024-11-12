@@ -20,6 +20,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "neverthrow": "^8.1.1",
     "typescript-eslint": "^8.13.0"
   },
   "devDependencies": {
