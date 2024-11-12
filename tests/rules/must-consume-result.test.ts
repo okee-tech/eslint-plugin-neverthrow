@@ -1,5 +1,5 @@
-import ruleTester from "../index.js";
-import rule from "../../src/rules/must-consume-result.js";
+import ruleTester from "../index";
+import rule from "../../src/rules/must-consume-result";
 // import { MessageId } from "../../src/utils.js";
 
 import { Result, ok } from "neverthrow";
@@ -10,29 +10,26 @@ okResult.map((_el) => "").isOk();
 
 const TMP = `
 
-import { Result, ok, fromThrowable } from "neverthrow";
+import { ok, Result } from "neverthrow";
 
-const genOk: () => Result<string, string> = () => ok("test");
-const okResult = genOk();
-okResult.isOk();
+function genResult(): Result<string, string> {
+  return ok("test");
+}
 
-// const gen = fromThrowable(() => "test");
-// const result = gen();
-// gen();
-
-// const genOk: () => Result<string, string> = () => ok("test");
-// const okResult = genOk();
-// genOk();
-
-// const genThr = fromThrowable(() => "test");
-// const thrResult = genThr();
-// genThr();
-
-// const a = okResult;
-// const b = a;
-// const d = b;
-
-// b.isOk();
+const res1 = genResult();
+const res2 = res1;
+{
+  const res3 = res2;
+  {
+    let res4 = res3;
+    {
+      var res5 = res4;
+      {
+        res5.isOk();
+      }
+    }
+  }
+}
 
 `;
 

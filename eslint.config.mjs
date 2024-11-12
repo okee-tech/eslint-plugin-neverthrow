@@ -2,6 +2,8 @@ import globals from "globals";
 import pluginJs from "@eslint/js";
 import tseslint from "typescript-eslint";
 
+import neverThrowPlugin from "./dist/src/index.js";
+
 /** @type {import('eslint').Linter.Config[]} */
 export default [
   {
@@ -22,5 +24,9 @@ export default [
         },
       ],
     },
+  },
+  {
+    files: ["tests/test-template.ts"],
+    ...neverThrowPlugin.configs.recommended,
   },
 ];

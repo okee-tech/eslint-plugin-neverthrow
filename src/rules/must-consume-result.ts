@@ -3,8 +3,9 @@ import { fromThrowable, Err, Ok, ResultAsync } from "neverthrow";
 import {
   ESLintUtils,
   type ParserServicesWithTypeInformation,
+  type TSESLint,
 } from "@typescript-eslint/utils";
-import { TSESTree } from "@typescript-eslint/types";
+import { TSESTree, AST_NODE_TYPES } from "@typescript-eslint/types";
 import { SyntaxKind } from "typescript";
 import path from "path";
 
@@ -20,7 +21,7 @@ function getConsumeMethods<T, A extends unknown[]>(
 }
 
 const NEVERTHROW_PATH_INDENTIFIER = path.join("node_modules", "neverthrow");
-const _RESULT_HANDLING_METHODS = new Set<string>([
+const RESULT_HANDLING_METHODS = new Set<string>([
   ...getConsumeMethods(Ok),
   ...getConsumeMethods(Err),
   ...getConsumeMethods(ResultAsync),
@@ -32,15 +33,17 @@ function isNeverthrowResult(
 ): boolean {
   const type = parserServices.getTypeAtLocation(node);
 
-  const symbol = type.aliasSymbol;
+  const symbol = type.aliasSymbol || type.symbol;
   if (!symbol) return false;
-  if (symbol.name != "Result") return false;
+  if (symbol.name != "Result" && symbol.name != "ResultAsync") return false;
 
   const declarations = symbol.declarations;
   if (!declarations) return false;
 
   const realDeclaration = declarations.find(
-    (el) => el.kind == SyntaxKind.TypeAliasDeclaration
+    (el) =>
+      el.kind == SyntaxKind.TypeAliasDeclaration ||
+      el.kind == SyntaxKind.ClassDeclaration
   );
   if (!realDeclaration) return false;
 
@@ -53,17 +56,66 @@ function isNeverthrowResult(
   return true;
 }
 
-function wasResultConsumed(
-  node: TSESTree.Node,
-  parserServices: ParserServicesWithTypeInformation
-): boolean {
-  const _type = parserServices.getTypeAtLocation(node);
+function checkIfImediateResultConsumed(node: TSESTree.Node): boolean {
+  const consumeCallee = node.parent;
+  if (!consumeCallee) return false;
+  if (consumeCallee.type != AST_NODE_TYPES.MemberExpression) return false;
+  if (consumeCallee.property.type != AST_NODE_TYPES.Identifier) return false;
+  if (!RESULT_HANDLING_METHODS.has(consumeCallee.property.name)) return false;
 
   return true;
 }
 
+function checkIfVariableResultConsumed(
+  node: TSESTree.Node,
+  context: TSESLint.RuleContext<MessageId, []>,
+  visited: Set<TSESTree.Node> = new Set()
+): boolean {
+  if (visited.has(node)) return false;
+  visited.add(node);
+
+  const variable = node.parent;
+  if (!variable) return false;
+  if (variable.type != AST_NODE_TYPES.VariableDeclarator) return false;
+
+  const variableId = variable.id;
+  if (variableId.type != AST_NODE_TYPES.Identifier) return false;
+  // if (checkIfImediateResultConsumed(variableId)) return true;
+
+  const originalScope = context.sourceCode.getScope(variable);
+  const scopeIterator = (innerScope: typeof originalScope) => {
+    const referenceNodes = innerScope?.references
+      .filter((el) => el.identifier.name == variableId.name)
+      .map((el) => el.identifier);
+
+    if (referenceNodes.some((el) => checkIfImediateResultConsumed(el)))
+      return true;
+
+    return (
+      innerScope.childScopes.some(scopeIterator) ||
+      referenceNodes.some((el) =>
+        checkIfVariableResultConsumed(el, context, visited)
+      )
+    );
+  };
+
+  return scopeIterator(originalScope);
+}
+
+function wasResultConsumed(
+  node: TSESTree.CallExpression,
+  context: TSESLint.RuleContext<MessageId, []>,
+  parserServices: ParserServicesWithTypeInformation,
+  _visited: Set<TSESTree.Node> = new Set()
+): boolean {
+  if (checkIfImediateResultConsumed(node)) return true;
+  if (checkIfVariableResultConsumed(node, context)) return true;
+
+  return false;
+}
+
 const rule = createRule<[], MessageId>({
-  name: "must-use-result",
+  name: "must-consume-result",
   meta: {
     type: "problem",
     docs: {
@@ -90,9 +142,19 @@ const rule = createRule<[], MessageId>({
       ._unsafeUnwrap();
 
     return {
+      // AwaitExpression(node: TSESTree.AwaitExpression) {
+      //   if (!isNeverthrowResult(node.argument, parserServices)) return;
+      //   console.log("AWAIT EXPRESSION");
+      //   // if (!wasResultConsumed(node, parserServices)) return;
+
+      //   // context.report({
+      //   //   node,
+      //   //   messageId: MessageId.MUST_USE,
+      //   // });
+      // },
       CallExpression(node: TSESTree.CallExpression) {
         if (!isNeverthrowResult(node, parserServices)) return;
-        if (wasResultConsumed(node, parserServices)) return;
+        if (wasResultConsumed(node, context, parserServices)) return;
 
         context.report({
           node,
