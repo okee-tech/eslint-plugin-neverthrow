@@ -1,7 +1,12 @@
 {
   "name": "@okee-tech/eslint-plugin-neverthrow",
   "version": "1.0.0",
+  "files": [
+    "dist/package.json",
+    "dist/src/**"
+  ],
   "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
   "directories": {
     "test": "tests"
   },
