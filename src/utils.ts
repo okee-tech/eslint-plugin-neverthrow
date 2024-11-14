@@ -1,12 +1,12 @@
 import { ESLintUtils } from "@typescript-eslint/utils";
 
-interface ExamplePluginDocs {
+interface PluginDocs {
   description: string;
   recommended?: boolean;
   requiresTypeChecking?: boolean;
 }
 
-const createRule = ESLintUtils.RuleCreator<ExamplePluginDocs>(
+const createRule = ESLintUtils.RuleCreator<PluginDocs>(
   (name) =>
     `https://github.com/okee-tech/eslint-plugin-neverthrow/blob/master/docs/rules/${name}.md`
 );
@@ -17,4 +17,4 @@ enum MessageId {
   AddUnsafeUnwrap = "AddUnsafeUnwrap",
 }
 
-export { createRule, MessageId, ExamplePluginDocs };
+export { createRule, MessageId, type PluginDocs };

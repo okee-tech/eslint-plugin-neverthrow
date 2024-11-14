@@ -119,8 +119,7 @@ function checkIfVariableResultConsumed(
 
 function wasResultConsumed(
   node: TSESTree.Node,
-  context: TSESLint.RuleContext<MessageId, []>,
-  _visited: Set<TSESTree.Node> = new Set()
+  context: TSESLint.RuleContext<MessageId, []>
 ): boolean {
   if (checkIfImediateResultConsumed(node)) return true;
   if (checkIfVariableResultConsumed(node, context)) return true;
@@ -201,4 +200,4 @@ const rule = createRule<[], MessageId>({
   defaultOptions: [],
 });
 
-export = rule;
+export default rule;

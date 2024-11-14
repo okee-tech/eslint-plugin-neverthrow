@@ -1,7 +1,7 @@
 import tsESLint from "typescript-eslint";
-import plugin from "../index";
 import type { TSESLint } from "@typescript-eslint/utils";
 import pkg from "../../package.json";
+import plugin from "../plugin";
 
 const pluginName = pkg.name;
 if (!pluginName) throw new Error("Plugin name is required");
@@ -20,7 +20,7 @@ const config: TSESLint.FlatConfig.Config = {
     },
   },
   rules: {
-    [pluginName]: "error",
+    [`${pluginName}/must-consume-result`]: "error",
   },
 };
 

@@ -8,10 +8,12 @@ import neverThrowPlugin from "./dist/src/index.js";
 export default [
   {
     files: ["**/*.{js,mjs,cjs,ts}"],
-    ignores: ["node_modules/**/*", "dist/**/*"],
-    languageOptions: { globals: globals.node },
-    ...pluginJs.configs.recommended,
   },
+  {
+    ignores: ["tests/test-template.ts", "dist/**/*", "node_modules/**/*"],
+  },
+  { languageOptions: { globals: globals.node } },
+  pluginJs.configs.recommended,
   ...tseslint.configs.recommended,
   {
     rules: {
