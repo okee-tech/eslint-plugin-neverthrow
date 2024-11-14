@@ -71,3 +71,5 @@ genResult().isOk();
   const result = genResultAsync();
   (await result).isOk();
 })();
+
+genResult();

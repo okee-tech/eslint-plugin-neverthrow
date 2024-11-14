@@ -178,16 +178,16 @@ const rule = createRule<[], MessageId>({
     fixable: "code",
   },
   create(context) {
-    const parserServices = fromThrowable(() =>
+    const { parserServices } = fromThrowable(() =>
       ESLintUtils.getParserServices(context)
-    )()
-      .mapErr(
-        (_err) =>
-          new Error(
-            "Was not able to get typescript information, make sure `@typescript-eslint/parser` is properly configured."
-          )
-      )
-      ._unsafeUnwrap();
+    )().match(
+      (parserServices) => ({ parserServices }),
+      () => {
+        throw new Error(
+          "Was not able to get typescript information, make sure `@typescript-eslint/parser` is properly configured."
+        );
+      }
+    );
 
     return {
       AwaitExpression(node: TSESTree.AwaitExpression) {

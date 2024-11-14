@@ -11,8 +11,6 @@ npm install -D @okee-tech/eslint-plugin-neverthrow
 yarn add -D @okee-tech/eslint-plugin-neverthrow
 ```
 
-Make sure you have `@typescript-eslint/parser` installed as this plugin requires TypeScript type information.
-
 ## Configuration (flat config)
 
 ```typescript
@@ -20,6 +18,9 @@ import neverthrowPlugin from "@okee-tech/eslint-plugin-neverthrow";
 import TSESLint from "typescript-eslint";
 
 export default [
+  // Use default config
+  neverthrowPlugin.configs.recomended,
+  // Or have custom config
   {
     plugins: { neverthrowPlugin },
     languageOptions: {
@@ -35,10 +36,8 @@ export default [
     rules: {
       "@okee-tech/eslint-plugin-neverthrow/must-consume-result": "error",
     },
-  }
-  // Or just
-  neverthrowPlugin.configs.recomended
-]
+  },
+];
 ```
 
 Ensures that Result objects returned from functions are properly handled.
@@ -83,9 +82,9 @@ const result = genResult();
 💡 Manually fixable by [editor suggestions](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions).\
 💭 Requires [type information](https://typescript-eslint.io/linting/typed-linting).
 
-| Name                                                     | Description                                                                   | 🔧  | 💡  | 💭  |
-| :------------------------------------------------------- | :---------------------------------------------------------------------------- | :-- | :-- | :-- |
-| [must-consume-result](docs/rules/must-consume-result.md) | Enforce proper handling of Result objects returned from neverthrow operations | 🔧  | 💡  | 💭  |
+| Name                                                     | Description                                                                   | 🔧 | 💡 | 💭 |
+| :------------------------------------------------------- | :---------------------------------------------------------------------------- | :- | :- | :- |
+| [must-consume-result](docs/rules/must-consume-result.md) | Enforce proper handling of Result objects returned from neverthrow operations | 🔧 | 💡 | 💭 |
 
 <!-- end auto-generated rules list -->
 
