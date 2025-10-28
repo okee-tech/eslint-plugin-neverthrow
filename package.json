@@ -1,6 +1,6 @@
 {
   "name": "@okee-tech/eslint-plugin-neverthrow",
-  "version": "1.0.9",
+  "version": "1.0.11",
   "files": [
     "dist/package.json",
     "dist/src/**"
@@ -28,14 +28,12 @@
   "license": "MIT",
   "description": "ESLint plugin to enforce proper handling of Result types from the `neverthrow`",
   "dependencies": {
+    "eslint": "^9.38.0",
+    "eslint-flat-config-utils": "^2.1.4",
     "neverthrow": "^8.2.0",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.46.2",
-    "vue-eslint-parser": "^10.2.0",
-    "eslint": "^9.38.0",
-    "eslint-flat-config-utils": "^2.1.4",
-    "@eslint/js": "^9.38.0",
-    "@types/eslint": "^9.6.1"
+    "vue-eslint-parser": "^10.2.0"
   },
   "devDependencies": {
     "@types/jest": "^30.0.0",

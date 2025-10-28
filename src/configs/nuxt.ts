@@ -1,10 +1,10 @@
 import tsESLint from "typescript-eslint";
 import vueParser from "vue-eslint-parser";
 import plugin from "../plugin";
-import { ResolvableFlatConfig } from "eslint-flat-config-utils";
+import { type Config } from "@eslint/config-helpers";
 import { asFlatPlugin, pluginName } from "../utils";
 
-const nuxtConfig: ResolvableFlatConfig = {
+const nuxtConfig: Config = {
   name: "neverthrow-nuxt",
   plugins: { [pluginName]: asFlatPlugin(plugin) },
   languageOptions: {

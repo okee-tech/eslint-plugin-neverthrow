@@ -1,6 +1,6 @@
 import { ESLintUtils } from "@typescript-eslint/utils";
 import pkg from "../package.json";
-import type { Plugin } from "@eslint/core";
+import type { Plugin } from "@eslint/config-helpers";
 
 const pluginName = pkg.name;
 if (!pluginName) throw new Error("Plugin name is required");
