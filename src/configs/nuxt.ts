@@ -1,15 +1,20 @@
 import tsESLint from "typescript-eslint";
 import vueParser from "vue-eslint-parser";
-import type { TSESLint } from "@typescript-eslint/utils";
 import pkg from "../../package.json";
 import plugin from "../plugin";
+import { ResolvableFlatConfig } from "eslint-flat-config-utils";
+import type { Plugin } from "@eslint/core";
 
 const pluginName = pkg.name;
 if (!pluginName) throw new Error("Plugin name is required");
 
-const nuxtConfig: TSESLint.FlatConfig.Config = {
+function asFlatPlugin(p: unknown): Plugin {
+  return p as Plugin;
+}
+
+const nuxtConfig: ResolvableFlatConfig = {
   name: "neverthrow-nuxt",
-  plugins: { [pluginName]: plugin },
+  plugins: { [pluginName]: asFlatPlugin(plugin) },
   languageOptions: {
     parser: vueParser,
     parserOptions: {
@@ -17,13 +22,11 @@ const nuxtConfig: TSESLint.FlatConfig.Config = {
       ecmaVersion: "latest",
       sourceType: "module",
 
-      // 🧠 Key part — use ProjectService for type info in multi-config Nuxt setups
       projectService: {
         allowDefaultProject: ["*.ts", "*.vue"],
         defaultProject: "./tsconfig.json", // Nuxt root tsconfig with references
       },
 
-      // Optional: root directory context
       tsconfigRootDir: process.cwd(),
       extraFileExtensions: [".vue"],
     },
