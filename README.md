@@ -55,11 +55,7 @@ _provided default config for Nuxt works only for nuxt >= 4.0.0_
 import neverthrowPlugin from "@okee-tech/eslint-plugin-neverthrow";
 import withNuxt from "./.nuxt/eslint.config.mjs";
 
-export default withNuxt([
-  {
-    ...neverthrowPlugin.configs.nuxt,
-  },
-]);
+export default withNuxt(neverthrowPlugin.configs.nuxt);
 ```
 
 ✅ Valid:
