@@ -1,6 +1,6 @@
 {
   "name": "@okee-tech/eslint-plugin-neverthrow",
-  "version": "1.0.6",
+  "version": "1.0.9",
   "files": [
     "dist/package.json",
     "dist/src/**"
@@ -31,16 +31,16 @@
     "neverthrow": "^8.2.0",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.46.2",
-    "vue-eslint-parser": "^10.2.0"
+    "vue-eslint-parser": "^10.2.0",
+    "eslint": "^9.38.0",
+    "eslint-flat-config-utils": "^2.1.4",
+    "@eslint/js": "^9.38.0",
+    "@types/eslint": "^9.6.1"
   },
   "devDependencies": {
-    "@eslint/js": "^9.38.0",
-    "@types/eslint": "^9.6.1",
     "@types/jest": "^30.0.0",
     "@typescript-eslint/rule-tester": "^8.46.2",
-    "eslint": "^9.38.0",
     "eslint-doc-generator": "^2.3.0",
-    "eslint-flat-config-utils": "^2.1.4",
     "globals": "^16.4.0",
     "jest": "^30.2.0",
     "npm-run-all": "^4.1.5",

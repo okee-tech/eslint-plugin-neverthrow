@@ -1,11 +1,11 @@
 import tsESLint from "typescript-eslint";
 import plugin from "../plugin";
-import { type ConfigObject } from "@eslint/core";
-import { pluginName, asFlatPlugin } from "../utils";
+import { pluginName } from "../utils";
+import type { TSESLint } from "@typescript-eslint/utils";
 
-const config: ConfigObject = {
+const config: TSESLint.FlatConfig.Config = {
   name: "neverthrow-recommended",
-  plugins: { [pluginName]: asFlatPlugin(plugin) },
+  plugins: { [pluginName]: plugin },
   languageOptions: {
     parser: tsESLint.parser,
     parserOptions: {
