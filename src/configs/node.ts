@@ -12,7 +12,8 @@ const config: Config = {
       ecmaVersion: "latest",
       sourceType: "module",
       projectService: {
-        allowDefaultProject: ["*.ts"],
+        allowDefaultProject: ["*.ts", "*.mjs"],
+        defaultProject: "./tsconfig.json",
       },
     },
   },
