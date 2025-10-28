@@ -11,7 +11,9 @@ npm install -D @okee-tech/eslint-plugin-neverthrow
 yarn add -D @okee-tech/eslint-plugin-neverthrow
 ```
 
-## Configuration (flat config)
+## Configuration Node (flat config)
+
+**File:** `eslint.config.ts`
 
 ```typescript
 import neverthrowPlugin from "@okee-tech/eslint-plugin-neverthrow";
@@ -19,7 +21,7 @@ import TSESLint from "typescript-eslint";
 
 export default [
   // Use default config
-  neverthrowPlugin.configs.recomended,
+  neverthrowPlugin.configs.node,
   // Or have custom config
   {
     plugins: { neverthrowPlugin },
@@ -41,6 +43,24 @@ export default [
 ```
 
 Ensures that Result objects returned from functions are properly handled.
+
+## Configuration Nuxt
+
+_provided default config for Nuxt works only for nuxt >= 4.0.0_
+
+**File:** `eslint.config.mjs`
+
+```typescript
+// @ts-check
+import neverthrowPlugin from "@okee-tech/eslint-plugin-neverthrow";
+import withNuxt from "./.nuxt/eslint.config.mjs";
+
+export default withNuxt([
+  {
+    ...neverthrowPlugin.configs.nuxt,
+  },
+]);
+```
 
 ✅ Valid:
 
@@ -82,9 +102,9 @@ const result = genResult();
 💡 Manually fixable by [editor suggestions](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions).\
 💭 Requires [type information](https://typescript-eslint.io/linting/typed-linting).
 
-| Name                                                     | Description                                                                   | 🔧 | 💡 | 💭 |
-| :------------------------------------------------------- | :---------------------------------------------------------------------------- | :- | :- | :- |
-| [must-consume-result](docs/rules/must-consume-result.md) | Enforce proper handling of Result objects returned from neverthrow operations | 🔧 | 💡 | 💭 |
+| Name                                                     | Description                                                                   | 🔧  | 💡  | 💭  |
+| :------------------------------------------------------- | :---------------------------------------------------------------------------- | :-- | :-- | :-- |
+| [must-consume-result](docs/rules/must-consume-result.md) | Enforce proper handling of Result objects returned from neverthrow operations | 🔧  | 💡  | 💭  |
 
 <!-- end auto-generated rules list -->
 

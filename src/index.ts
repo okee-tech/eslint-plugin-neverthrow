@@ -1,4 +1,5 @@
-import recommended from "./configs/recommended";
+import node from "./configs/node";
+import nuxt from "./configs/nuxt";
 import plugin from "./plugin";
 
-export = { ...plugin, configs: { recommended } };
+export = { ...plugin, configs: { node, nuxt } };
