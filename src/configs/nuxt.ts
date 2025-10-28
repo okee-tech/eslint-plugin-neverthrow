@@ -1,16 +1,8 @@
 import tsESLint from "typescript-eslint";
 import vueParser from "vue-eslint-parser";
-import pkg from "../../package.json";
 import plugin from "../plugin";
 import { ResolvableFlatConfig } from "eslint-flat-config-utils";
-import type { Plugin } from "@eslint/core";
-
-const pluginName = pkg.name;
-if (!pluginName) throw new Error("Plugin name is required");
-
-function asFlatPlugin(p: unknown): Plugin {
-  return p as Plugin;
-}
+import { asFlatPlugin, pluginName } from "../utils";
 
 const nuxtConfig: ResolvableFlatConfig = {
   name: "neverthrow-nuxt",

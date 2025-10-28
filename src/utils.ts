@@ -1,4 +1,13 @@
 import { ESLintUtils } from "@typescript-eslint/utils";
+import pkg from "../package.json";
+import type { Plugin } from "@eslint/core";
+
+const pluginName = pkg.name;
+if (!pluginName) throw new Error("Plugin name is required");
+
+function asFlatPlugin(p: unknown): Plugin {
+  return p as Plugin;
+}
 
 interface PluginDocs {
   description: string;
@@ -17,4 +26,4 @@ enum MessageId {
   AddUnsafeUnwrap = "AddUnsafeUnwrap",
 }
 
-export { createRule, MessageId, type PluginDocs };
+export { createRule, MessageId, type PluginDocs, asFlatPlugin, pluginName };

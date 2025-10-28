@@ -1,14 +1,11 @@
 import tsESLint from "typescript-eslint";
-import type { TSESLint } from "@typescript-eslint/utils";
-import pkg from "../../package.json";
 import plugin from "../plugin";
+import { type ConfigObject } from "@eslint/core";
+import { pluginName, asFlatPlugin } from "../utils";
 
-const pluginName = pkg.name;
-if (!pluginName) throw new Error("Plugin name is required");
-
-const config: TSESLint.FlatConfig.Config = {
+const config: ConfigObject = {
   name: "neverthrow-recommended",
-  plugins: { [pluginName]: plugin },
+  plugins: { [pluginName]: asFlatPlugin(plugin) },
   languageOptions: {
     parser: tsESLint.parser,
     parserOptions: {
