@@ -28,22 +28,25 @@
   "license": "MIT",
   "description": "ESLint plugin to enforce proper handling of Result types from the `neverthrow`",
   "dependencies": {
-    "eslint": "^9.38.0",
-    "eslint-flat-config-utils": "^2.1.4",
     "neverthrow": "^8.2.0",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.46.2",
-    "vue-eslint-parser": "^10.2.0"
+    "typescript-eslint": "^8.69.0",
+    "vue-eslint-parser": "^10.4.1"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@types/jest": "^30.0.0",
-    "@typescript-eslint/rule-tester": "^8.46.2",
+    "@typescript-eslint/rule-tester": "^8.69.0",
+    "eslint": "^10.9.1",
     "eslint-doc-generator": "^2.3.0",
     "globals": "^16.4.0",
     "jest": "^30.2.0",
     "npm-run-all": "^4.1.5",
     "ts-jest": "^29.4.5",
     "ts-node": "^10.9.2"
+  },
+  "peerDependencies": {
+    "eslint": "^9.0.0 || ^10.0.0"
   },
   "repository": {
     "type": "git",

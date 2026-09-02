@@ -6,9 +6,9 @@ Plugin [NPM](https://www.npmjs.com/package/@okee-tech/eslint-plugin-neverthrow)
 ## Installation
 
 ```bash
-npm install -D @okee-tech/eslint-plugin-neverthrow
+npm install -D eslint @okee-tech/eslint-plugin-neverthrow
 # or
-yarn add -D @okee-tech/eslint-plugin-neverthrow
+yarn add -D eslint @okee-tech/eslint-plugin-neverthrow
 ```
 
 ## Configuration Node (flat config)

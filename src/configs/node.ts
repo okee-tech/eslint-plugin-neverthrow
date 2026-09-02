@@ -1,9 +1,9 @@
 import tsESLint from "typescript-eslint";
 import plugin from "../plugin";
 import { asFlatPlugin, pluginName } from "../utils";
-import { type Config } from "@eslint/config-helpers";
+import type { Linter } from "eslint";
 
-const config: Config = {
+const config: Linter.Config = {
   name: "neverthrow-recommended",
   plugins: { [pluginName]: asFlatPlugin(plugin) },
   languageOptions: {

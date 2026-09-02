@@ -1,10 +1,10 @@
 import tsESLint from "typescript-eslint";
 import vueParser from "vue-eslint-parser";
 import plugin from "../plugin";
-import { type Config } from "@eslint/config-helpers";
+import type { Linter } from "eslint";
 import { asFlatPlugin, pluginName } from "../utils";
 
-const nuxtConfig: Config = {
+const nuxtConfig: Linter.Config = {
   name: "neverthrow-nuxt",
   plugins: { [pluginName]: asFlatPlugin(plugin) },
   languageOptions: {

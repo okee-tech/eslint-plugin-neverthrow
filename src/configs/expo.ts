@@ -1,9 +1,9 @@
 import tsESLint from "typescript-eslint";
 import plugin from "../plugin";
 import { asFlatPlugin, pluginName } from "../utils";
-import { type Config } from "@eslint/config-helpers";
+import type { Linter } from "eslint";
 
-const expoConfig: Config = {
+const expoConfig: Linter.Config = {
   name: "neverthrow-expo",
   plugins: { [pluginName]: asFlatPlugin(plugin) },
   languageOptions: {
