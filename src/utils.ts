@@ -1,12 +1,12 @@
 import { ESLintUtils } from "@typescript-eslint/utils";
 import pkg from "../package.json";
-import type { Plugin } from "@eslint/config-helpers";
+import type { ESLint } from "eslint";
 
 const pluginName = pkg.name;
 if (!pluginName) throw new Error("Plugin name is required");
 
-function asFlatPlugin(p: unknown): Plugin {
-  return p as Plugin;
+function asFlatPlugin(p: unknown): ESLint.Plugin {
+  return p as ESLint.Plugin;
 }
 
 interface PluginDocs {
